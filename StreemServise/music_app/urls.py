@@ -8,6 +8,7 @@ from . import views
 app_mame = 'music_app'
 
 urlpatterns = [
+    path('song/<int:pk>/', views.single_music_page, name='music'),
     path('', views.music_list_page, name='home'),
 
 ]
