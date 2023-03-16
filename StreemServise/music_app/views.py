@@ -12,6 +12,6 @@ def music_list_page(request):
 
 def single_music_page(requesr, pk):
     music = get_object_or_404(Music, id=pk)
-    template_name = 'music_app/music.html'
+    template_name = 'music_app/music_page.html'
     context = {'music': music}
     return render(requesr, template_name, context)
