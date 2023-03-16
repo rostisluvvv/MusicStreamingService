@@ -8,34 +8,44 @@ class SongWriter(models.Model):
                               blank=True,
                               null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Song(models.Model):
     song_title = models.CharField(max_length=100)
     song_writer = models.ForeignKey(SongWriter,
                                     on_delete=models.CASCADE,
-                                    related_name='song',
-                                    verbose_name='songwriter',
-                                    max_length=100)
+                                    related_name='songs',
+                                    verbose_name='songwriter')
     file = models.FileField(
         upload_to='music/%Y/%m/%d/',
         validators=[FileExtensionValidator(allowed_extensions=['mp3'])]
     )
-    image = models.ForeignKey('Album', on_delete=models.CASCADE)
+    # albums = models.ManyToManyField(Album, related_name='songs')
 
     def __str__(self):
         return self.song_title
-
-    class Meta:
-        ordering = ['-release_date']
 
 
 class Album(models.Model):
     album_title = models.CharField(max_length=100)
     song_writer = models.ForeignKey(SongWriter,
-                                    related_name='song_writer',
+                                    related_name='albums',
                                     on_delete=models.CASCADE)
-    file = models.ForeignKey(Song,
-                             related_name='song',
-                             on_delete=models.CASCADE)
+
     image = models.ImageField(upload_to='song_image/%Y/%m/%d/')
     release_date = models.DateTimeField(auto_now_add=True)
+    songs = models.ManyToManyField(Song, related_name='albums')
+
+    def __str__(self):
+        return self.album_title
+
+    class Meta:
+        ordering = ['-release_date']
+
+
+
+
+
+
