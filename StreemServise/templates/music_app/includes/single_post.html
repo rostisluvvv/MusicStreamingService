@@ -4,7 +4,7 @@
          class="card-img-top" alt=""/>
     <div class="card-body">
       <h5 class="card-title">
-        <a href="{% url 'music_app:music' album.id %}">
+        <a href="{% url 'music_app:album' album.pk %}">
         {{ album.album_title }}
         </a>
       </h5>
@@ -14,4 +14,3 @@
     </div>
   </div>
 </div>
-

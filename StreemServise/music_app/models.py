@@ -36,6 +36,7 @@ class Album(models.Model):
     image = models.ImageField(upload_to='song_image/%Y/%m/%d/')
     release_date = models.DateTimeField(auto_now_add=True)
     songs = models.ManyToManyField(Song, related_name='albums')
+    slug = models.SlugField(max_length=25, unique=True)
 
     def __str__(self):
         return self.album_title
