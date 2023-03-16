@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'music_app',
+
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
