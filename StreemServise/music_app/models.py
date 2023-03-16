@@ -22,7 +22,6 @@ class Song(models.Model):
         upload_to='music/%Y/%m/%d/',
         validators=[FileExtensionValidator(allowed_extensions=['mp3'])]
     )
-    # albums = models.ManyToManyField(Album, related_name='songs')
 
     def __str__(self):
         return self.song_title
@@ -43,9 +42,3 @@ class Album(models.Model):
 
     class Meta:
         ordering = ['-release_date']
-
-
-
-
-
-
