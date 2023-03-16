@@ -12,6 +12,7 @@ class SongWriterAdmin(admin.ModelAdmin):
 class AlbumAdmin(admin.ModelAdmin):
     list_display = ('pk', 'album_title', 'song_writer')
     list_display_links = ('album_title',)
+    prepopulated_fields = {"slug": ("album_title",)}
     empty_value_display = '-пусто-'
 
 
