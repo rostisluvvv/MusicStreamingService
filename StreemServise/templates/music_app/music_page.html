@@ -25,7 +25,7 @@
 
   <title>
     {% block title %}
-    {{ music.songwriter }} - {{ music.song_title }}
+    {{ song.song_writer }} - {{ song.song_title }}
     {% endblock %}
   </title>
 
@@ -45,8 +45,9 @@
 
   <main>
 
+
     <div class="album-art">
-      <img src="{{ music.image.url }}"/>
+      <img src="{{ album.image.url }}"/>
     </div>
 
     <div class="player">
@@ -59,7 +60,7 @@
 
   </main>
   <footer>
-    <div class="title">{{ music.songwriter }} - {{ music.song_title }}
+    <div class="title">{{ song.song_writer }} - {{ song.song_title }}
     </div>
     <div class="time-tracker">
       <div class="timer">
@@ -75,45 +76,54 @@
     </div>
   </footer>
   <audio id="audio">
-    <source src="{{ music.file.url }}" type="audio/mpeg">
+    <source src="{{ song.file.url }}" type="audio/mpeg">
   </audio>
 </div>
 
 <script>
-  const audio = document.getElementById('audio');
-  const playPauseBtn = document.getElementById('play-pause-btn');
-  const progressBar = document.querySelector('.bg');
-  const timeEl = document.querySelector('.time');
-  const volumeSlider = document.getElementById('volume-slider');
 
-  playPauseBtn.addEventListener('click', () => {
-    if (audio.paused) {
-      audio.play();
-      playPauseBtn.textContent = 'Pause';
-    } else {
-      audio.pause();
-      playPauseBtn.textContent = 'Play';
-    }
-  });
+const audio = document.getElementById('audio');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const bg = document.querySelector('.bg');
+const timeEl = document.querySelector('.time');
+const volumeSlider = document.getElementById('volume-slider');
 
-  audio.addEventListener('timeupdate', () => {
-    const currentTime = audio.currentTime;
-    const duration = audio.duration;
-    const progress = (currentTime / duration) * 100;
+bg.addEventListener('click', function(e) {
+  const { offsetX } = e;
+  const { offsetWidth } = this;
+  const progress = offsetX / offsetWidth;
+  audio.currentTime = audio.duration * progress;
+});
 
-    progressBar.style.width = `${progress}%`;
-  });
+audio.addEventListener('timeupdate', function() {
+  const { currentTime, duration } = this;
+  const progress = (currentTime / duration) * 100;
+  bg.style.width = `${progress}%`;
 
-  audio.addEventListener('loadedmetadata', () => {
-    const duration = audio.duration;
-    const minutes = Math.floor(duration / 60);
-    const seconds = Math.floor(duration % 60);
-    timeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  });
+  const minutes = Math.floor(currentTime / 60);
+  const seconds = Math.floor(currentTime % 60);
+  timeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+});
 
-  volumeSlider.addEventListener('input', () => {
-    audio.volume = volumeSlider.value;
-  });
+playPauseBtn.addEventListener('click', () => {
+  if (audio.paused) {
+    audio.play();
+    playPauseBtn.textContent = 'Pause';
+  } else {
+    audio.pause();
+    playPauseBtn.textContent = 'Play';
+  }
+});
+
+audio.addEventListener('loadedmetadata', () => {
+  const minutes = Math.floor(audio.duration / 60);
+  const seconds = Math.floor(audio.duration % 60);
+  timeEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+});
+
+volumeSlider.addEventListener('input', () => {
+  audio.volume = volumeSlider.value;
+});
 
 
 </script>
