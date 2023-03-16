@@ -13,7 +13,16 @@ def music_list_page(request):
     return render(request, template_name, context)
 
 
-def single_music_page(requesr, pk):
+# def music_list_page(request, album_id):
+#     albums = Album.objects.get(id=album_id)
+#     context = {
+#         'albums': albums,
+#     }
+#     template_name = 'music_app/home.html'
+#     return render(request, template_name, context)
+
+
+def single_music_page(request, pk):
     song = get_object_or_404(Song, id=pk)
     album = song.albums.last()
     template_name = 'music_app/music_page.html'
@@ -21,4 +30,4 @@ def single_music_page(requesr, pk):
         'song': song,
         'album': album,
     }
-    return render(requesr, template_name, context)
+    return render(request, template_name, context)
