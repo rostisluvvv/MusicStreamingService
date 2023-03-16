@@ -1,10 +1,13 @@
-
 <div class="col">
   <div class="card h-100; shadow" style="border-radius: 12px;">
     <img src="{{ music.image.url }}"
          class="card-img-top" alt=""/>
     <div class="card-body">
-      <h5 class="card-title">{{ music.song_title }}</h5>
+      <h5 class="card-title">
+        <a href="{% url 'music_app:music' music.id %}">
+        {{ music.song_title }}
+        </a>
+      </h5>
       <p class="card-text">
         {{ music.songwriter }}
       </p>
