@@ -3,63 +3,59 @@
 {% load thumbnail %}
 {% load static %}
 
+
+{% block title %}
+{{ song.song_writer }} - {{ song.song_title }}
+{% endblock %}
+
+
+
+
 {% block content %}
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="{% static 'img/fav/fav.ico' %}" type="image ">
-  <link rel="apple-touch-icon" sizes="180x180"
-        href="{% static 'img/fav/apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32"
-        href="{% static 'img/fav/favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16"
-        href="{% static 'img/fav/favicon-16x16.png' %}">
-  <meta name="msapplication-TileColor" content="#000">
-  <meta name="theme-color" content="#ffffff">
   <link rel="stylesheet" href="{% static 'css/pleer_style.css' %}">
-  <link rel="stylesheet"
-        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'
-        type='text/css'>
-
-  <title>
-    {% block title %}
-    {{ song.song_writer }} - {{ song.song_title }}
-    {% endblock %}
-  </title>
-
-
 </head>
 
-
 <div class="container">
-  <header>
+  <head_up>
     <div class="playlist">
       <a href="/">
         <i class="fa fa-bars"></i>
       </a>
     </div>
-
-  </header>
+  </head_up>
 
   <main>
 
 
     <div class="album-art">
       <img src="{{ album.image.url }}"/>
+
     </div>
+
+    <div style="height: 200px; overflow: auto; display: inline-block; direction: rtl; text-align: left;"
+         class="bar">
+      {% for single in songs_in_cur_album %}
+      <ul style="color: white">{{ single.song_writer }} - {{single.song_title|safe|truncatechars:20 }}
+      </ul>
+      {% endfor %}
+    </div>
+
 
     <div class="player">
       <i class="fa fa-repeat"></i>
       <i class="fa fa-fast-backward"></i>
+
       <i class="fa fa-play" id="play-pause-btn"></i>
       <i class="fa fa-fast-forward"></i>
       <i class="fa fa-random"></i>
+
+
     </div>
 
   </main>
-  <footer>
+  <foot>
     <div class="title">{{ song.song_writer }} - {{ song.song_title }}
     </div>
     <div class="time-tracker">
@@ -67,6 +63,7 @@
         <div class="bg">
         </div>
       </div>
+
       <div class="time">00:00</div>
     </div>
     <div class="volume-control">
@@ -74,7 +71,7 @@
       <input type="range" class="slider" min="0" max="1" step="0.01" value="1"
              id="volume-slider" orient="vertical">
     </div>
-  </footer>
+  </foot>
   <audio id="audio">
     <source src="{{ song.file.url }}" type="audio/mpeg">
   </audio>
@@ -108,7 +105,7 @@ audio.addEventListener('timeupdate', function() {
 playPauseBtn.addEventListener('click', () => {
   if (audio.paused) {
     audio.play();
-    playPauseBtn.textContent = 'Pause';
+    playPauseBtn.textContent = 'Pausa';
   } else {
     audio.pause();
     playPauseBtn.textContent = 'Play';
@@ -124,6 +121,9 @@ audio.addEventListener('loadedmetadata', () => {
 volumeSlider.addEventListener('input', () => {
   audio.volume = volumeSlider.value;
 });
+
+
+
 
 
 </script>
